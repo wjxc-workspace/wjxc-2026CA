@@ -90,8 +90,8 @@ func TestScoringPanelWebsocket(t *testing.T) {
 	}{}
 	assert.Equal(t, 0, web.arena.RedRealtimeScore.CurrentScore.BargeAlgae)
 	assert.Equal(t, 0, web.arena.BlueRealtimeScore.CurrentScore.BargeAlgae)
-	assert.Equal(t, 0, web.arena.RedRealtimeScore.CurrentScore.ProcessorAlgae)
-	assert.Equal(t, 0, web.arena.BlueRealtimeScore.CurrentScore.ProcessorAlgae)
+	assert.Equal(t, 0, web.arena.RedRealtimeScore.CurrentScore.Fuel)
+	assert.Equal(t, 0, web.arena.BlueRealtimeScore.CurrentScore.Fuel)
 	counterData.Adjustment = 1
 	blueWs.Write("barge", counterData)
 	blueWs.Write("barge", counterData)
@@ -120,8 +120,8 @@ func TestScoringPanelWebsocket(t *testing.T) {
 	}
 	assert.Equal(t, 0, web.arena.RedRealtimeScore.CurrentScore.BargeAlgae)
 	assert.Equal(t, 2, web.arena.BlueRealtimeScore.CurrentScore.BargeAlgae)
-	assert.Equal(t, 2, web.arena.RedRealtimeScore.CurrentScore.ProcessorAlgae)
-	assert.Equal(t, 0, web.arena.BlueRealtimeScore.CurrentScore.ProcessorAlgae)
+	assert.Equal(t, 2, web.arena.RedRealtimeScore.CurrentScore.Fuel)
+	assert.Equal(t, 0, web.arena.BlueRealtimeScore.CurrentScore.Fuel)
 
 	// Send some trough scoring commands
 	assert.Equal(t, 0, web.arena.RedRealtimeScore.CurrentScore.Reef.TroughNear)

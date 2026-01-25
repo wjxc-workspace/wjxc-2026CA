@@ -30,20 +30,12 @@
 {{define "alliance_match_result"}}
 <h4>Score</h4>
 <div class="row justify-content-center">
-  <div class="col-sm-6">Auto Leave Points</div>
-  <div class="col-sm-4">{{.summary.LeavePoints}}</div>
+  <div class="col-sm-6">Auto Tower Points</div>
+  <div class="col-sm-4">{{.summary.AutoTowerPoints}}</div>
 </div>
 <div class="row justify-content-center">
-  <div class="col-sm-6">Coral Points</div>
-  <div class="col-sm-4">{{.summary.CoralPoints}}</div>
-</div>
-<div class="row justify-content-center">
-  <div class="col-sm-6">Algae Points</div>
-  <div class="col-sm-4">{{.summary.AlgaePoints}}</div>
-</div>
-<div class="row justify-content-center">
-  <div class="col-sm-6">Barge Points</div>
-  <div class="col-sm-4">{{.summary.BargePoints}}</div>
+  <div class="col-sm-6">FuelPoints</div>
+  <div class="col-sm-4">{{.summary.FuelPoints}}</div>
 </div>
 <div class="row justify-content-center">
   <div class="col-sm-6">Foul Points</div>
@@ -51,16 +43,16 @@
 </div>
 {{if ne .matchType playoffMatch}}
 <div class="row justify-content-center">
-  <div class="col-sm-6">Auto Bonus RP</div>
-  <div class="col-sm-4">{{if .summary.AutoBonusRankingPoint}}Yes{{else}}No{{end}}</div>
+  <div class="col-sm-6">Energized RP</div>
+  <div class="col-sm-4">{{if .summary.EnergizedRankingPoint}}Yes{{else}}No{{end}}</div>
 </div>
 <div class="row justify-content-center">
-  <div class="col-sm-6">Coral Bonus RP</div>
-  <div class="col-sm-4">{{if .summary.CoralBonusRankingPoint}}Yes{{else}}No{{end}}</div>
+  <div class="col-sm-6">SuperCharged RP</div>
+  <div class="col-sm-4">{{if .summary.SuperChargedRankingPoint}}Yes{{else}}No{{end}}</div>
 </div>
 <div class="row justify-content-center">
-  <div class="col-sm-6">Barge Bonus RP</div>
-  <div class="col-sm-4">{{if .summary.BargeBonusRankingPoint}}Yes{{else}}No{{end}}</div>
+  <div class="col-sm-6">Traversal RP</div>
+  <div class="col-sm-4">{{if .summary.TraversalRankingPoint}}Yes{{else}}No{{end}}</div>
 </div>
 {{end}}
 <div class="row justify-content-center mt-3">

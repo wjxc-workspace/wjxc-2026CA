@@ -15,12 +15,12 @@ func TestScoreSummary(t *testing.T) {
 	blueScore := TestScore2()
 
 	redSummary := redScore.Summarize(blueScore)
-	assert.Equal(t, 6, redSummary.LeavePoints)
-	assert.Equal(t, 13, redSummary.AutoPoints)
+	assert.Equal(t, 6, redSummary.AutoTowerPoints)
+	assert.Equal(t, 13, redSummary.AutoFuelPoints)
 	assert.Equal(t, 12, redSummary.NumCoral)
 	assert.Equal(t, 34, redSummary.CoralPoints)
-	assert.Equal(t, 9, redSummary.NumAlgae)
-	assert.Equal(t, 40, redSummary.AlgaePoints)
+	assert.Equal(t, 9, redSummary.NumFuels)
+	assert.Equal(t, 40, redSummary.FuelPoints)
 	assert.Equal(t, 14, redSummary.TowerPoints)
 	assert.Equal(t, 94, redSummary.MatchPoints)
 	assert.Equal(t, 0, redSummary.FoulPoints)
@@ -36,12 +36,12 @@ func TestScoreSummary(t *testing.T) {
 	assert.Equal(t, 0, redSummary.NumOpponentMajorFouls)
 
 	blueSummary := blueScore.Summarize(redScore)
-	assert.Equal(t, 3, blueSummary.LeavePoints)
-	assert.Equal(t, 33, blueSummary.AutoPoints)
+	assert.Equal(t, 3, blueSummary.AutoTowerPoints)
+	assert.Equal(t, 33, blueSummary.AutoFuelPoints)
 	assert.Equal(t, 26, blueSummary.NumCoral)
 	assert.Equal(t, 83, blueSummary.CoralPoints)
-	assert.Equal(t, 10, blueSummary.NumAlgae)
-	assert.Equal(t, 42, blueSummary.AlgaePoints)
+	assert.Equal(t, 10, blueSummary.NumFuels)
+	assert.Equal(t, 42, blueSummary.FuelPoints)
 	assert.Equal(t, 24, blueSummary.TowerPoints)
 	assert.Equal(t, 152, blueSummary.MatchPoints)
 	assert.Equal(t, 34, blueSummary.FoulPoints)
@@ -140,7 +140,7 @@ func TestScoreCoralBonusRankingPoint(t *testing.T) {
 	assert.Equal(t, true, blueScoreSummary.SuperChargedRankingPoint)
 
 	// Activate coopertition bonus for the blue alliance.
-	blueScore.ProcessorAlgae = 2
+	blueScore.Fuel = 2
 	redScoreSummary = redScore.Summarize(blueScore)
 	blueScoreSummary = blueScore.Summarize(redScore)
 	assert.Equal(t, true, redScoreSummary.CoopertitionCriteriaMet)
@@ -292,7 +292,7 @@ func TestScoreBargeBonusRankingPointIncludingAlgae(t *testing.T) {
 	score := Score{
 		EndgameStatuses: [3]EndgameStatus{EndgameLevel3, EndgameLevel3, EndgameLevel1},
 		BargeAlgae:      1,
-		ProcessorAlgae:  1,
+		Fuel:            1,
 	}
 	summary := score.Summarize(&Score{})
 	assert.Equal(t, false, summary.TraversalRankingPoint)
@@ -413,7 +413,7 @@ func TestScoreEquals(t *testing.T) {
 	assert.False(t, score2.Equals(score1))
 
 	score2 = TestScore1()
-	score2.ProcessorAlgae = 3
+	score2.Fuel = 3
 	assert.False(t, score1.Equals(score2))
 	assert.False(t, score2.Equals(score1))
 

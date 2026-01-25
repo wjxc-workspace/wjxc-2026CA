@@ -4,11 +4,12 @@
 package field
 
 import (
+	"image/color"
+	"testing"
+
 	"github.com/Team254/cheesy-arena/game"
 	"github.com/Team254/cheesy-arena/model"
 	"github.com/stretchr/testify/assert"
-	"image/color"
-	"testing"
 )
 
 func TestTeamSign_GenerateInMatchRearText(t *testing.T) {
@@ -21,7 +22,7 @@ func TestTeamSign_GenerateInMatchRearText(t *testing.T) {
 	assert.Equal(t, "1-07 2-02 3-03 4-00", generateInMatchTimerRearText(arena, true))
 	assert.Equal(t, "1-15 2-03 3-05 4-03", generateInMatchTimerRearText(arena, false))
 	arena.BlueRealtimeScore.CurrentScore.Reef.Branches[2] = [12]bool{true, true, true, true, true, true, true, true}
-	arena.BlueRealtimeScore.CurrentScore.ProcessorAlgae = 2
+	arena.BlueRealtimeScore.CurrentScore.Fuel = 2
 	assert.Equal(t, "00:59 R080-B195 1/3", generateInMatchTeamRearText(arena, true, "00:59"))
 	assert.Equal(t, "00:59 B195-R080 2/3", generateInMatchTeamRearText(arena, false, "00:59"))
 	assert.Equal(t, "1-07 2-02 3-03 4-00", generateInMatchTimerRearText(arena, true))

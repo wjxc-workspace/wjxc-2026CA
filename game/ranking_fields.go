@@ -59,7 +59,7 @@ func (fields *RankingFields) AddScoreSummary(ownScore *ScoreSummary, opponentSco
 		fields.CoopertitionPoints++
 	}
 	fields.MatchPoints += ownScore.MatchPoints
-	fields.AutoPoints += ownScore.AutoPoints
+	fields.AutoPoints += ownScore.AutoFuelPoints + ownScore.AutoTowerPoints
 	fields.BargePoints += ownScore.TowerPoints
 }
 

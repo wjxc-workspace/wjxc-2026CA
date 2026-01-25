@@ -34,7 +34,7 @@ type Plc interface {
 	GetInputNames() []string
 	GetRegisterNames() []string
 	GetCoilNames() []string
-	GetProcessorCounts() (int, int)
+	GetProcessorCounts() (int, int, int, int)
 	// SetTrussLights(redLights, blueLights [3]bool)
 }
 
@@ -96,7 +96,9 @@ type register int
 
 const (
 	fieldIoConnection register = iota
+	redProcessorAuto
 	redProcessor
+	blueProcessorAuto
 	blueProcessor
 	registerCount
 )
@@ -297,8 +299,8 @@ func (plc *ModbusPlc) GetCoilNames() []string {
 }
 
 // Returns the red and blue processor counts, respectively.
-func (plc *ModbusPlc) GetProcessorCounts() (int, int) {
-	return int(plc.registers[redProcessor]), int(plc.registers[blueProcessor])
+func (plc *ModbusPlc) GetProcessorCounts() (int, int, int, int) {
+	return int(plc.registers[redProcessorAuto]), int(plc.registers[redProcessor]), int(plc.registers[blueProcessorAuto]), int(plc.registers[blueProcessor])
 }
 
 // Sets the state of the red and blue truss lights. Each array represents the outer, middle, and inner lights,

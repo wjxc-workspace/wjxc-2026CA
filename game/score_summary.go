@@ -6,12 +6,12 @@
 package game
 
 type ScoreSummary struct {
-	LeavePoints              int
-	AutoPoints               int
+	AutoTowerPoints          int
+	AutoFuelPoints           int
 	NumCoral                 int
 	CoralPoints              int
-	NumAlgae                 int
-	AlgaePoints              int
+	NumFuels                 int
+	FuelPoints               int
 	TowerPoints              int
 	MatchPoints              int
 	FoulPoints               int
@@ -54,7 +54,7 @@ func DetermineMatchStatus(redScoreSummary, blueScoreSummary *ScoreSummary, apply
 		); status != TieMatch {
 			return status
 		}
-		if status := comparePoints(redScoreSummary.AutoPoints, blueScoreSummary.AutoPoints); status != TieMatch {
+		if status := comparePoints(redScoreSummary.AutoFuelPoints, blueScoreSummary.AutoFuelPoints); status != TieMatch {
 			return status
 		}
 		if status := comparePoints(redScoreSummary.TowerPoints, blueScoreSummary.TowerPoints); status != TieMatch {

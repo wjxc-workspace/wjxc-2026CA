@@ -7,15 +7,16 @@ package web
 
 import (
 	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"strings"
+
 	"github.com/Team254/cheesy-arena/field"
 	"github.com/Team254/cheesy-arena/game"
 	"github.com/Team254/cheesy-arena/model"
 	"github.com/Team254/cheesy-arena/websocket"
 	"github.com/mitchellh/mapstructure"
-	"io"
-	"log"
-	"net/http"
-	"strings"
 )
 
 type ScoringPosition struct {
@@ -264,7 +265,7 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 				score.BargeAlgae = max(0, score.BargeAlgae+args.Adjustment)
 				scoreChanged = true
 			case "processor":
-				score.ProcessorAlgae = max(0, score.ProcessorAlgae+args.Adjustment)
+				score.Fuel = max(0, score.Fuel+args.Adjustment)
 				scoreChanged = true
 			case "trough":
 				if args.Current {

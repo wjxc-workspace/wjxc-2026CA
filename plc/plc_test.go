@@ -348,17 +348,17 @@ func TestPlcRegistersGameSpecific(t *testing.T) {
 	client.registers[1] = 0
 	client.registers[2] = 0
 	plc.update()
-	redProcessor, blueProcessor := plc.GetProcessorCounts()
+	redProcessor, blueProcessor, _, _ := plc.GetProcessorCounts()
 	assert.Equal(t, 0, redProcessor)
 	assert.Equal(t, 0, blueProcessor)
 	client.registers[1] = 12
 	plc.update()
-	redProcessor, blueProcessor = plc.GetProcessorCounts()
+	redProcessor, blueProcessor, _, _ = plc.GetProcessorCounts()
 	assert.Equal(t, 12, redProcessor)
 	assert.Equal(t, 0, blueProcessor)
 	client.registers[2] = 34
 	plc.update()
-	redProcessor, blueProcessor = plc.GetProcessorCounts()
+	redProcessor, blueProcessor, _, _ = plc.GetProcessorCounts()
 	assert.Equal(t, 12, redProcessor)
 	assert.Equal(t, 34, blueProcessor)
 }

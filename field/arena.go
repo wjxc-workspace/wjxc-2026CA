@@ -8,6 +8,7 @@ package field
 import (
 	"fmt"
 	"log"
+	"os/exec"
 	"reflect"
 	"strconv"
 	"strings"
@@ -492,6 +493,9 @@ func (arena *Arena) SubstituteTeams(red1, red2, red3, blue1, blue2, blue3 int) e
 func (arena *Arena) StartMatch() error {
 	err := arena.checkCanStartMatch()
 	if err == nil {
+		go exec.Command("python", "test.py").CombinedOutput()
+		time.Sleep(2 * time.Second)
+
 		// Save the match start time to the database for posterity.
 		arena.CurrentMatch.StartedAt = time.Now()
 		if arena.CurrentMatch.Type != model.Test {
@@ -1136,7 +1140,7 @@ func (arena *Arena) handlePlcInputOutput() {
 	// Get all the game-specific inputs and update the score.
 	if arena.MatchState == AutoPeriod || arena.MatchState == PausePeriod || arena.MatchState == TeleopPeriod ||
 		inGracePeriod {
-		redScore.ProcessorAlgae, blueScore.ProcessorAlgae = arena.Plc.GetProcessorCounts()
+		redScore.FuelAuto, redScore.Fuel, blueScore.FuelAuto, blueScore.Fuel = arena.Plc.GetProcessorCounts()
 	}
 	if !oldRedScore.Equals(redScore) || !oldBlueScore.Equals(blueScore) {
 		arena.RealtimeScoreNotifier.Notify()

@@ -10,7 +10,8 @@ type Score struct {
 	LeaveStatuses   [3]bool
 	Reef            Reef
 	BargeAlgae      int
-	ProcessorAlgae  int
+	FuelAuto        int
+	Fuel            int
 	EndgameStatuses [3]EndgameStatus
 	Fouls           []Foul
 	PlayoffDq       bool
@@ -49,12 +50,12 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		}
 	}
 	autoCoralPoints := score.Reef.AutoCoralPoints()
-	summary.AutoPoints = summary.LeavePoints + autoCoralPoints
+	summary.AutoFuelPoints = score.FuelAuto
 
 	summary.NumCoral = score.Reef.AutoCoralCount() + score.Reef.TeleopCoralCount()
 	summary.CoralPoints = autoCoralPoints + score.Reef.TeleopCoralPoints()
-	summary.NumAlgae = score.BargeAlgae + score.ProcessorAlgae
-	summary.AlgaePoints = score.BargeAlgae + score.ProcessorAlgae
+	summary.NumFuels = score.Fuel
+	summary.FuelPoints = score.Fuel
 
 	// Calculate endgame points.
 	for _, status := range score.EndgameStatuses {
@@ -69,7 +70,7 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		}
 	}
 
-	summary.MatchPoints = summary.LeavePoints + summary.CoralPoints + summary.AlgaePoints + summary.TowerPoints
+	summary.MatchPoints = summary.FuelPoints + summary.TowerPoints
 
 	// Calculate penalty points.
 	for _, foul := range opponentScore.Fouls {
@@ -79,28 +80,28 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 			summary.NumOpponentMajorFouls++
 		}
 
-		rule := foul.Rule()
-		if rule != nil {
-			// Check for the opponent fouls that automatically trigger a ranking point.
-			if rule.IsRankingPoint {
-				switch rule.RuleNumber {
-				case "G410":
-					summary.SuperChargedRankingPoint = true
-				case "G418":
-					summary.TraversalRankingPoint = true
-				case "G428":
-					summary.TraversalRankingPoint = true
-				}
-			}
-		}
+		// rule := foul.Rule()
+		// if rule != nil {
+		// 	// Check for the opponent fouls that automatically trigger a ranking point.
+		// 	if rule.IsRankingPoint {
+		// 		switch rule.RuleNumber {
+		// 		case "G410":
+		// 			summary.SuperChargedRankingPoint = true
+		// 		case "G418":
+		// 			summary.TraversalRankingPoint = true
+		// 		case "G428":
+		// 			summary.TraversalRankingPoint = true
+		// 		}
+		// 	}
+		// }
 	}
 
 	summary.Score = summary.MatchPoints + summary.FoulPoints
 
-	if summary.AlgaePoints >= 100 {
+	if summary.FuelPoints >= 100 {
 		summary.EnergizedRankingPoint = true
 	}
-	if summary.AlgaePoints >= 360 {
+	if summary.FuelPoints >= 360 {
 		summary.SuperChargedRankingPoint = true
 	}
 
@@ -129,7 +130,7 @@ func (score *Score) Equals(other *Score) bool {
 		score.LeaveStatuses != other.LeaveStatuses ||
 		score.Reef != other.Reef ||
 		score.BargeAlgae != other.BargeAlgae ||
-		score.ProcessorAlgae != other.ProcessorAlgae ||
+		score.Fuel != other.Fuel ||
 		score.EndgameStatuses != other.EndgameStatuses ||
 		score.PlayoffDq != other.PlayoffDq ||
 		len(score.Fouls) != len(other.Fouls) {

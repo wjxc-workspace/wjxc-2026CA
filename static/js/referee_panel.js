@@ -88,9 +88,9 @@ const handleMatchTime = function (data) {
 
 const endgameStatusNames = [
   "None",
-  "Park",
-  "Shallow",
-  "Deep",
+  "Level1",
+  "Level2",
+  "Level3",
 ];
 
 // Handles a websocket message to update the realtime scoring fields.

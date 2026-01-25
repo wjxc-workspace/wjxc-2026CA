@@ -195,9 +195,9 @@ UI for entering realtime scores.
 {{define "endgame-input"}}
 <div id="{{.id}}" class="endgame-input team-{{.index}}">
   <div class="team-num"></div>
-  {{template "endgame-input-button" (dict "label" "Deep" "endgameState" 3 "index" .index)}}
-  {{template "endgame-input-button" (dict "label" "Shallow" "endgameState" 2 "index" .index)}}
-  {{template "endgame-input-button" (dict "label" "Park" "endgameState" 1 "index" .index)}}
+  {{template "endgame-input-button" (dict "label" "Level3" "endgameState" 3 "index" .index)}}
+  {{template "endgame-input-button" (dict "label" "Level2" "endgameState" 2 "index" .index)}}
+  {{template "endgame-input-button" (dict "label" "Level1" "endgameState" 1 "index" .index)}}
   {{template "endgame-input-button" (dict "label" "None" "endgameState" 0 "index" .index)}}
 </div>
 {{end}}

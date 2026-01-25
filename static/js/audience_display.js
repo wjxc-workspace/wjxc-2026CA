@@ -144,8 +144,8 @@ const handleMatchTime = function (data) {
 
 // Handles a websocket message to update the match score.
 const handleRealtimeScore = function (data) {
-  $(`#${redSide}ScoreNumber`).text(data.Red.ScoreSummary.Score - data.Red.ScoreSummary.BargePoints);
-  $(`#${blueSide}ScoreNumber`).text(data.Blue.ScoreSummary.Score - data.Blue.ScoreSummary.BargePoints);
+  $(`#${redSide}ScoreNumber`).text(data.Red.ScoreSummary.Score);
+  $(`#${blueSide}ScoreNumber`).text(data.Blue.ScoreSummary.Score);
 
   let redCoral, blueCoral;
   if (currentMatch.Type === matchTypePlayoff) {
@@ -155,10 +155,10 @@ const handleRealtimeScore = function (data) {
     redCoral = `${data.Red.ScoreSummary.NumCoralLevels}/${data.Red.ScoreSummary.NumCoralLevelsGoal}`;
     blueCoral = `${data.Blue.ScoreSummary.NumCoralLevels}/${data.Blue.ScoreSummary.NumCoralLevelsGoal}`;
   }
-  $(`#${redSide}Coral`).text(redCoral);
-  $(`#${redSide}Algae`).text(data.Red.ScoreSummary.NumAlgae);
-  $(`#${blueSide}Coral`).text(blueCoral);
-  $(`#${blueSide}Algae`).text(data.Blue.ScoreSummary.NumAlgae);
+  $(`#${redSide}Coral`).text(data.Red.ScoreSummary.AutoFuelPoints);
+  $(`#${redSide}Algae`).text(data.Red.ScoreSummary.NumFuels);
+  $(`#${blueSide}Coral`).text(data.Blue.ScoreSummary.AutoFuelPoints);
+  $(`#${blueSide}Algae`).text(data.Blue.ScoreSummary.NumFuels);
 };
 
 // Handles a websocket message to populate the final score data.
@@ -173,34 +173,28 @@ const handleScorePosted = function (data) {
   } else {
     setTeamInfo(redSide, 4, 0, data.RedCards, data.RedRankings);
   }
-  $(`#${redSide}FinalLeavePoints`).text(data.RedScoreSummary.LeavePoints);
-  $(`#${redSide}FinalCoralPoints`).text(data.RedScoreSummary.CoralPoints);
-  $(`#${redSide}FinalAlgaePoints`).text(data.RedScoreSummary.AlgaePoints);
-  $(`#${redSide}FinalBargePoints`).text(data.RedScoreSummary.BargePoints);
+  $(`#${redSide}FinalLeavePoints`).text(data.RedScoreSummary.AutoFuelPoints);
+  $(`#${redSide}FinalCoralPoints`).text(data.RedScoreSummary.AutoTowerPoints);
+  $(`#${redSide}FinalAlgaePoints`).text(data.RedScoreSummary.FuelPoints);
+  $(`#${redSide}FinalBargePoints`).text(data.RedScoreSummary.TowerPoints);
   $(`#${redSide}FinalFoulPoints`).text(data.RedScoreSummary.FoulPoints);
-  $(`#${redSide}FinalCoopertitionBonus`).html(
-    data.RedScoreSummary.CoopertitionBonus ? "&#x2714;" : "&#x2718;"
-  );
-  $(`#${redSide}FinalCoopertitionBonus`).attr(
-    "data-checked", data.RedScoreSummary.CoopertitionBonus
-  );
   $(`#${redSide}FinalAutoBonusRankingPoint`).html(
-    data.RedScoreSummary.AutoBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.RedScoreSummary.EnergizedRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $(`#${redSide}FinalAutoBonusRankingPoint`).attr(
-    "data-checked", data.RedScoreSummary.AutoBonusRankingPoint
+    "data-checked", data.RedScoreSummary.EnergizedRankingPoint
   );
   $(`#${redSide}FinalCoralBonusRankingPoint`).html(
-    data.RedScoreSummary.CoralBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.RedScoreSummary.SuperChargedRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $(`#${redSide}FinalCoralBonusRankingPoint`).attr(
-    "data-checked", data.RedScoreSummary.CoralBonusRankingPoint
+    "data-checked", data.RedScoreSummary.SuperChargedRankingPoint
   );
   $(`#${redSide}FinalBargeBonusRankingPoint`).html(
-    data.RedScoreSummary.BargeBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.RedScoreSummary.TraversalRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $(`#${redSide}FinalBargeBonusRankingPoint`).attr(
-    "data-checked", data.RedScoreSummary.BargeBonusRankingPoint
+    "data-checked", data.RedScoreSummary.TraversalRankingPoint
   );
   $(`#${redSide}FinalRankingPoints`).html(data.RedRankingPoints);
   $(`#${redSide}FinalWins`).text(data.RedWins);
@@ -219,34 +213,28 @@ const handleScorePosted = function (data) {
   } else {
     setTeamInfo(blueSide, 4, 0, data.BlueCards, data.BlueRankings);
   }
-  $(`#${blueSide}FinalLeavePoints`).text(data.BlueScoreSummary.LeavePoints);
-  $(`#${blueSide}FinalCoralPoints`).text(data.BlueScoreSummary.CoralPoints);
-  $(`#${blueSide}FinalAlgaePoints`).text(data.BlueScoreSummary.AlgaePoints);
-  $(`#${blueSide}FinalBargePoints`).text(data.BlueScoreSummary.BargePoints);
+  $(`#${blueSide}FinalLeavePoints`).text(data.BlueScoreSummary.AutoFuelPoints);
+  $(`#${blueSide}FinalCoralPoints`).text(data.BlueScoreSummary.AutoTowerPoints);
+  $(`#${blueSide}FinalAlgaePoints`).text(data.BlueScoreSummary.FuelPoints);
+  $(`#${blueSide}FinalBargePoints`).text(data.BlueScoreSummary.TowerPoints);
   $(`#${blueSide}FinalFoulPoints`).text(data.BlueScoreSummary.FoulPoints);
-  $(`#${blueSide}FinalCoopertitionBonus`).html(
-    data.BlueScoreSummary.CoopertitionBonus ? "&#x2714;" : "&#x2718;"
-  );
-  $(`#${blueSide}FinalCoopertitionBonus`).attr(
-    "data-checked", data.BlueScoreSummary.CoopertitionBonus
-  );
   $(`#${blueSide}FinalAutoBonusRankingPoint`).html(
-    data.BlueScoreSummary.AutoBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.BlueScoreSummary.EnergizedRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $(`#${blueSide}FinalAutoBonusRankingPoint`).attr(
-    "data-checked", data.BlueScoreSummary.AutoBonusRankingPoint
+    "data-checked", data.BlueScoreSummary.EnergizedRankingPoint
   );
   $(`#${blueSide}FinalCoralBonusRankingPoint`).html(
-    data.BlueScoreSummary.CoralBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.BlueScoreSummary.SuperChargedRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $(`#${blueSide}FinalCoralBonusRankingPoint`).attr(
-    "data-checked", data.BlueScoreSummary.CoralBonusRankingPoint
+    "data-checked", data.BlueScoreSummary.SuperChargedRankingPoint
   );
   $(`#${blueSide}FinalBargeBonusRankingPoint`).html(
-    data.BlueScoreSummary.BargeBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.BlueScoreSummary.TraversalRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $(`#${blueSide}FinalBargeBonusRankingPoint`).attr(
-    "data-checked", data.BlueScoreSummary.BargeBonusRankingPoint
+    "data-checked", data.BlueScoreSummary.TraversalRankingPoint
   );
   $(`#${blueSide}FinalRankingPoints`).html(data.BlueRankingPoints);
   $(`#${blueSide}FinalWins`).text(data.BlueWins);

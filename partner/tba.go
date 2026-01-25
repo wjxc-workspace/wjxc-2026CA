@@ -158,9 +158,9 @@ type TbaPublishedAward struct {
 var leaveMapping = map[bool]string{false: "No", true: "Yes"}
 var endGameStatusMapping = map[game.EndgameStatus]string{
 	game.EndgameNone:   "None",
-	game.EndgameLevel1: "Parked",
-	game.EndgameLevel2: "ShallowCage",
-	game.EndgameLevel3: "DeepCage",
+	game.EndgameLevel1: "Level1",
+	game.EndgameLevel2: "Level2",
+	game.EndgameLevel3: "Level3",
 }
 
 func NewTbaClient(eventCode, secretId, secret string) *TbaClient {
@@ -650,7 +650,7 @@ func createTbaScoringBreakdown(
 	breakdown.AutoLineRobot1 = leaveMapping[score.LeaveStatuses[0]]
 	breakdown.AutoLineRobot2 = leaveMapping[score.LeaveStatuses[1]]
 	breakdown.AutoLineRobot3 = leaveMapping[score.LeaveStatuses[2]]
-	breakdown.AutoMobilityPoints = scoreSummary.LeavePoints
+	breakdown.AutoMobilityPoints = scoreSummary.AutoTowerPoints
 	breakdown.AutoReef.BotRow = make(map[string]bool)
 	breakdown.AutoReef.MidRow = make(map[string]bool)
 	breakdown.AutoReef.TopRow = make(map[string]bool)
@@ -665,7 +665,7 @@ func createTbaScoringBreakdown(
 	breakdown.AutoReef.Trough = score.Reef.CountCoralByLevelAndPeriod(game.Level1, true)
 	breakdown.AutoCoralCount = score.Reef.AutoCoralCount()
 	breakdown.AutoCoralPoints = score.Reef.AutoCoralPoints()
-	breakdown.AutoPoints = scoreSummary.AutoPoints
+	breakdown.AutoPoints = scoreSummary.AutoFuelPoints
 	breakdown.TeleopReef.BotRow = make(map[string]bool)
 	breakdown.TeleopReef.MidRow = make(map[string]bool)
 	breakdown.TeleopReef.TopRow = make(map[string]bool)
@@ -685,13 +685,13 @@ func createTbaScoringBreakdown(
 	teleopCoralPoints := score.Reef.TeleopCoralPoints()
 	breakdown.TeleopCoralPoints = teleopCoralPoints
 	breakdown.NetAlgaeCount = score.BargeAlgae
-	breakdown.WallAlgaeCount = score.ProcessorAlgae
-	breakdown.AlgaePoints = scoreSummary.AlgaePoints
+	breakdown.WallAlgaeCount = score.Fuel
+	breakdown.AlgaePoints = scoreSummary.FuelPoints
 	breakdown.EndGameRobot1 = endGameStatusMapping[score.EndgameStatuses[0]]
 	breakdown.EndGameRobot2 = endGameStatusMapping[score.EndgameStatuses[1]]
 	breakdown.EndGameRobot3 = endGameStatusMapping[score.EndgameStatuses[2]]
 	breakdown.EndGameBargePoints = scoreSummary.TowerPoints
-	breakdown.TeleopPoints = teleopCoralPoints + scoreSummary.AlgaePoints + scoreSummary.TowerPoints
+	breakdown.TeleopPoints = teleopCoralPoints + scoreSummary.FuelPoints + scoreSummary.TowerPoints
 	breakdown.CoopertitionCriteriaMet = scoreSummary.CoopertitionCriteriaMet
 	breakdown.AutoBonusAchieved = scoreSummary.EnergizedRankingPoint
 	breakdown.CoralBonusAchieved = scoreSummary.SuperChargedRankingPoint
