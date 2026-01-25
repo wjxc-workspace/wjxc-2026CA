@@ -1,0 +1,181 @@
+/*
+  Copyright 2014 Team 254. All Rights Reserved.
+  Author: pat@patfairbank.com (Patrick Fairbank)
+*/
+
+/* Bootstrap overrides. */
+.form-control[disabled] {
+  cursor: default;
+}
+.btn[disabled] {
+  color: #000;
+  opacity: 0.2;
+}
+
+/* New styles. */
+@font-face {
+  font-family: "FuturaLTBold";
+  src: url("fonts/futura-lt-bold.otf") format("opentype");
+}
+@font-face {
+  font-family: "FuturaLT";
+  src: url("fonts/futura-lt.otf") format("opentype");
+}
+.red-text {
+  color: #f00;
+}
+.blue-text {
+  color: #00f;
+}
+.bg-red {
+  background-color: #422 !important;
+}
+.bg-dark-red {
+  background-color: #311 !important;
+}
+.bg-blue {
+  background-color: #192945 !important;
+}
+.bg-dark-blue {
+  background-color: #113 !important;
+}
+.bg-yellow {
+  background-color: #442 !important;
+}
+.bg-green {
+  background-color: #132 !important;
+}
+.col-no-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+.modal-large {
+  width: 60%;
+}
+.team-number {
+  height: 27px;
+}
+.ds-status, .radio-status, .robot-status, .bypass-status {
+  background-color: #aaa;
+  color: #000;
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 0px;
+  width: 60px;
+  height: 27px;
+  line-height: 25px;
+  font-size: 14px;
+  margin: 0 auto;
+}
+.bypass-status {
+  cursor: pointer;
+}
+[data-status-ok="true"], [data-status-ternary="2"] {
+  background-color: #0e8;
+}
+[data-status-ok="false"], [data-status-ternary="0"] {
+  background-color: #e66;
+}
+[data-status-ternary="1"] {
+  background-color: #fc3;
+}
+[data-blink="true"] {
+  background-color: #960;
+}
+.btn-match-play {
+  width: 170px;
+  height: 50px;
+  line-height: 36px;
+  font-size: 16px;
+}
+.btn-match-play-narrow {
+  width: 139px;
+}
+.badge-scoring {
+  background-color: #e66;
+}
+.badge-scoring[data-ready=true] {
+  background-color: #0c6;
+}
+.badge-scoring[data-present=false] {
+  background-color: #666;
+}
+.badge-status {
+  background-color: #e66;
+}
+.badge-status[data-status=BOOTING] {
+  background-color: #f92;
+}
+.badge-status[data-status=CONFIGURING], .badge-status[data-status=DISABLED] {
+  background-color: #08f;
+}
+.badge-status[data-status=ACTIVE] {
+  background-color: #0c6;
+}
+.badge-saved-match {
+  background-color: #666;
+}
+.nowrap {
+  white-space: nowrap;
+}
+.indentwrap p {
+  margin: 8px 0px;
+  padding-left: 20px;
+  text-indent: -20px;
+}
+.btn-logs {
+  width: 60px;
+}
+.btn-lower-third {
+  width: 80px;
+}
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+td[data-plc-value="false"] {
+  color: #f00;
+}
+td[data-plc-value="true"] {
+  color: #090;
+}
+.btn-game-sound {
+  width: 190px;
+  text-align: left;
+}
+.btn-purple {
+  background-color: #90c;
+}
+.btn-purple:hover {
+  background-color: #80b;
+}
+.btn-purple[disabled] {
+  background-color: #639;
+}
+input[data-changed="true"], select[data-changed="true"] {
+  border: 2px solid #f00;
+}
+.match-list {
+  height: 610px;
+  overflow-y: auto;
+}
+.match-list th {
+  position: sticky;
+  top: 0;
+}
+#testMatchSettings {
+  display: none;
+}
+
+/* Placeholder styles for input fields*/
+.col-lg-6 input::placeholder {
+    color: #ff0000; /* Red placeholder text */
+    font-style: italic;
+    opacity: 0.4;
+}
+
+.col-lg-2 input::placeholder {
+    color: #ff0000; /* Red placeholder text */
+    font-style: italic;
+    opacity: 0.4;
+}
