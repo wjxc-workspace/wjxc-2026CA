@@ -166,7 +166,7 @@ const handleRealtimeScore = function (data) {
 
   for (let i = 0; i < 3; i++) {
     const i1 = i + 1;
-    $(`#auto-status-${i1} > .team-text`).text(score.LeaveStatuses[i] ? "Leave" : "None");
+    $(`#auto-status-${i1} > .team-text`).text(score.LeaveStatuses[i] ? "Level1" : "None");
     $(`#auto-status-${i1}`).attr("data-selected", score.LeaveStatuses[i]);
     $(`#endgame-status-${i1} > .team-text`).text(endgameStatusNames[score.EndgameStatuses[i]]);
     $(`#endgame-status-${i1}`).attr("data-selected", endgameStatusNames[score.EndgameStatuses[i]] != "None");

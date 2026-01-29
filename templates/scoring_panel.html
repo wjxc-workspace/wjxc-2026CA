@@ -159,7 +159,7 @@ UI for entering realtime scores.
 {{end}}
 
 {{define "counter"}}
-<div id="{{.id}}" class="counter">
+<!-- <div id="{{.id}}" class="counter">
   <button class="counter-decrement scoring-button" onclick="handleCounterClick('{{.id}}', -1);" ontouchstart disabled>
     -1
   </button>
@@ -174,11 +174,11 @@ UI for entering realtime scores.
   <button class="counter-increment scoring-button" onclick="handleCounterClick('{{.id}}', 1);" ontouchstart disabled>
     +1
   </button>
-</div>
+</div> -->
 {{end}}
 
 {{define "reefColumn"}}
-<div id="reef-column-{{.index}}" class="reef-column">
+<!-- <div id="reef-column-{{.index}}" class="reef-column">
   <div class="reef-column-contents">
     {{ $index := .index }}
     {{range $i := seq 3}}
@@ -189,7 +189,7 @@ UI for entering realtime scores.
       <use xlink:href="#reef-column"/>
     </svg>
   </div>
-</div>
+</div> -->
 {{end}}
 
 {{define "endgame-input"}}
