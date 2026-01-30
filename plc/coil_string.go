@@ -16,12 +16,6 @@ func _() {
 	_ = x[stackLightBlue-5]
 	_ = x[stackLightBuzzer-6]
 	_ = x[fieldResetLight-7]
-	// _ = x[redTrussLightOuter-8]
-	// _ = x[redTrussLightMiddle-9]
-	// _ = x[redTrussLightInner-10]
-	// _ = x[blueTrussLightOuter-11]
-	// _ = x[blueTrussLightMiddle-12]
-	// _ = x[blueTrussLightInner-13]
 	_ = x[coilCount-8]
 }
 

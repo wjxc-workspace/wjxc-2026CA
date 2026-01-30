@@ -9,11 +9,10 @@ func _() {
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
 	_ = x[fieldIoConnection-0]
-	_ = x[redProcessorAuto-1]
-	_ = x[redProcessor-2]
-	_ = x[blueProcessorAuto-3]
-	_ = x[blueProcessor-4]
-	_ = x[registerCount-5]
+	_ = x[redProcessor-1]
+	_ = x[blueProcessor-2]
+	_ = x[hubActivateState-3]
+	_ = x[registerCount-4]
 }
 
 const _register_name = "fieldIoConnectionredProcessorblueProcessorregisterCount"

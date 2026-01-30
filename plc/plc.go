@@ -34,8 +34,8 @@ type Plc interface {
 	GetInputNames() []string
 	GetRegisterNames() []string
 	GetCoilNames() []string
-	GetProcessorCounts() (int, int, int, int)
-	// SetTrussLights(redLights, blueLights [3]bool)
+	GetProcessorCounts() (int, int)
+	SetHubLight(activateState int)
 }
 
 type ModbusPlc struct {
@@ -96,10 +96,9 @@ type register int
 
 const (
 	fieldIoConnection register = iota
-	redProcessorAuto
 	redProcessor
-	blueProcessorAuto
 	blueProcessor
+	hubActivateState
 	registerCount
 )
 
@@ -117,12 +116,6 @@ const (
 	stackLightBlue
 	stackLightBuzzer
 	fieldResetLight
-	// redTrussLightOuter
-	// redTrussLightMiddle
-	// redTrussLightInner
-	// blueTrussLightOuter
-	// blueTrussLightMiddle
-	// blueTrussLightInner
 	coilCount
 )
 
@@ -299,13 +292,24 @@ func (plc *ModbusPlc) GetCoilNames() []string {
 }
 
 // Returns the red and blue processor counts, respectively.
-func (plc *ModbusPlc) GetProcessorCounts() (int, int, int, int) {
-	return int(plc.registers[redProcessorAuto]), int(plc.registers[redProcessor]), int(plc.registers[blueProcessorAuto]), int(plc.registers[blueProcessor])
+func (plc *ModbusPlc) GetProcessorCounts() (int, int) {
+	return int(plc.registers[redProcessor]), int(plc.registers[blueProcessor])
 }
 
-// Sets the state of the red and blue truss lights. Each array represents the outer, middle, and inner lights,
-// respectively.
-// func (plc *Modbusy
+// 0 off off
+// 1 blue red
+// 2 blue red_blink
+// 3 blue_blink red
+// 4 blue off
+// 5 blue_blink off
+// 6 off red
+// 7 off red_blink
+// 8 blue_blink red_blink
+func (plc *ModbusPlc) SetHubLight(activateState int) {
+	go func() {
+		plc.client.WriteSingleRegister(3, uint16(activateState))
+	}()
+}
 
 func (plc *ModbusPlc) connect() error {
 	address := fmt.Sprintf("%s:%d", plc.address, modbusPort)

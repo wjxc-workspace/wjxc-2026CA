@@ -28,6 +28,11 @@ type FakePlc struct {
 	blueTrussLights       [3]bool
 }
 
+// SetHubLight implements plc.Plc.
+func (plc *FakePlc) SetHubLight(activateState int) {
+	panic("unimplemented")
+}
+
 func (plc *FakePlc) SetAddress(address string) {
 }
 
@@ -100,8 +105,8 @@ func (plc *FakePlc) GetCoilNames() []string {
 	return []string{}
 }
 
-func (plc *FakePlc) GetProcessorCounts() (int, int, int, int) {
-	return plc.redProcessorCount, plc.redProcessorCount, plc.blueProcessorCount, plc.blueProcessorCount
+func (plc *FakePlc) GetProcessorCounts() (int, int) {
+	return plc.redProcessorCount, plc.redProcessorCount
 }
 
 func (plc *FakePlc) SetTrussLights(redLights, blueLights [3]bool) {

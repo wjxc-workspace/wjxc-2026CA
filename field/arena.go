@@ -8,7 +8,7 @@ package field
 import (
 	"fmt"
 	"log"
-	"os/exec"
+	"math/rand"
 	"reflect"
 	"strconv"
 	"strings"
@@ -99,6 +99,7 @@ type Arena struct {
 	breakDescription                  string
 	preloadedTeams                    *[6]*model.Team
 	NextFoulId                        int
+	GameData                          string
 }
 
 type AllianceStation struct {
@@ -493,9 +494,6 @@ func (arena *Arena) SubstituteTeams(red1, red2, red3, blue1, blue2, blue3 int) e
 func (arena *Arena) StartMatch() error {
 	err := arena.checkCanStartMatch()
 	if err == nil {
-		go exec.Command("python", "test.py").CombinedOutput()
-		time.Sleep(2 * time.Second)
-
 		// Save the match start time to the database for posterity.
 		arena.CurrentMatch.StartedAt = time.Now()
 		if arena.CurrentMatch.Type != model.Test {
@@ -1140,10 +1138,98 @@ func (arena *Arena) handlePlcInputOutput() {
 	// Get all the game-specific inputs and update the score.
 	if arena.MatchState == AutoPeriod || arena.MatchState == PausePeriod || arena.MatchState == TeleopPeriod ||
 		inGracePeriod {
-		redScore.FuelAuto, redScore.Fuel, blueScore.FuelAuto, blueScore.Fuel = arena.Plc.GetProcessorCounts()
+		redScore.Fuel, blueScore.Fuel = arena.Plc.GetProcessorCounts()
+		if currentTime.Sub(matchStartTime) < 23*time.Second {
+			redScore.FuelAuto = redScore.Fuel
+			blueScore.FuelAuto = blueScore.Fuel
+		}
 	}
 	if !oldRedScore.Equals(redScore) || !oldBlueScore.Equals(blueScore) {
 		arena.RealtimeScoreNotifier.Notify()
+	}
+
+	if arena.MatchState == AutoPeriod || arena.MatchState == TeleopPeriod {
+		if currentTime.Sub(matchStartTime) < 27*time.Second {
+			arena.Plc.SetHubLight(1)
+		} else if currentTime.Sub(matchStartTime) < 30*time.Second {
+			if arena.GameData == "R" {
+				arena.Plc.SetHubLight(2)
+			} else {
+				arena.Plc.SetHubLight(3)
+			}
+		} else if currentTime.Sub(matchStartTime) < 52*time.Second {
+			if arena.GameData == "R" {
+				arena.Plc.SetHubLight(4)
+			} else {
+				arena.Plc.SetHubLight(6)
+			}
+		} else if currentTime.Sub(matchStartTime) < 55*time.Second {
+			if arena.GameData == "R" {
+				arena.Plc.SetHubLight(5)
+			} else {
+				arena.Plc.SetHubLight(7)
+			}
+		} else if currentTime.Sub(matchStartTime) < 77*time.Second {
+			if arena.GameData == "R" {
+				arena.Plc.SetHubLight(6)
+			} else {
+				arena.Plc.SetHubLight(4)
+			}
+		} else if currentTime.Sub(matchStartTime) < 80*time.Second {
+			if arena.GameData == "R" {
+				arena.Plc.SetHubLight(7)
+			} else {
+				arena.Plc.SetHubLight(5)
+			}
+		} else if currentTime.Sub(matchStartTime) < 102*time.Second {
+			if arena.GameData == "R" {
+				arena.Plc.SetHubLight(4)
+			} else {
+				arena.Plc.SetHubLight(6)
+			}
+		} else if currentTime.Sub(matchStartTime) < 105*time.Second {
+			if arena.GameData == "R" {
+				arena.Plc.SetHubLight(5)
+			} else {
+				arena.Plc.SetHubLight(7)
+			}
+		} else if currentTime.Sub(matchStartTime) < 130*time.Second {
+			if arena.GameData == "R" {
+				arena.Plc.SetHubLight(6)
+			} else {
+				arena.Plc.SetHubLight(4)
+			}
+		} else if currentTime.Sub(matchStartTime) < 157*time.Second {
+			arena.Plc.SetHubLight(1)
+		} else if currentTime.Sub(matchStartTime) < 160*time.Second {
+			arena.Plc.SetHubLight(8)
+		}
+	} else if arena.MatchState == PostMatch {
+		arena.Plc.SetHubLight(0)
+	}
+
+	if arena.MatchState == TeleopPeriod && arena.GameData == "" && currentTime.Sub(matchStartTime) > 23*time.Second {
+		redScore.Fuel, blueScore.Fuel = arena.Plc.GetProcessorCounts()
+		if redScore.FuelAuto > blueScore.FuelAuto {
+			arena.GameData = "R"
+		} else if redScore.FuelAuto < blueScore.FuelAuto {
+			arena.GameData = "B"
+		} else {
+			if rand.Intn(2) == 0 {
+				arena.GameData = "R"
+			} else {
+				arena.GameData = "B"
+			}
+		}
+
+		for _, alliance := range arena.AllianceStations {
+			if alliance.DsConn != nil {
+				err := alliance.DsConn.sendGameDataPacket(arena.GameData)
+				if err != nil {
+					fmt.Println(err)
+				}
+			}
+		}
 	}
 
 	// Handle the truss lights.
