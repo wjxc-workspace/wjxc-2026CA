@@ -9,15 +9,15 @@ func _() {
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
 	_ = x[fieldIoConnection-0]
-	_ = x[redProcessor-1]
-	_ = x[blueProcessor-2]
+	_ = x[redHub-1]
+	_ = x[blueHub-2]
 	_ = x[hubActivateState-3]
 	_ = x[registerCount-4]
 }
 
-const _register_name = "fieldIoConnectionredProcessorblueProcessorregisterCount"
+const _register_name = "fieldIoConnectionredHubblueHubhubActivateState"
 
-var _register_index = [...]uint8{0, 17, 29, 42, 55}
+var _register_index = [...]uint8{0, 17, 23, 30, 46}
 
 func (i register) String() string {
 	if i < 0 || i >= register(len(_register_index)-1) {

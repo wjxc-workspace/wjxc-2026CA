@@ -1139,7 +1139,7 @@ func (arena *Arena) handlePlcInputOutput() {
 	if arena.MatchState == AutoPeriod || arena.MatchState == PausePeriod || arena.MatchState == TeleopPeriod ||
 		inGracePeriod {
 		redScore.Fuel, blueScore.Fuel = arena.Plc.GetProcessorCounts()
-		if currentTime.Sub(matchStartTime) < 23*time.Second {
+		if currentTime.Sub(matchStartTime) < 20*time.Second {
 			redScore.FuelAuto = redScore.Fuel
 			blueScore.FuelAuto = blueScore.Fuel
 		}
@@ -1208,7 +1208,7 @@ func (arena *Arena) handlePlcInputOutput() {
 		arena.Plc.SetHubLight(0)
 	}
 
-	if arena.MatchState == TeleopPeriod && arena.GameData == "" && currentTime.Sub(matchStartTime) > 23*time.Second {
+	if arena.MatchState == TeleopPeriod && arena.GameData == "" && currentTime.Sub(matchStartTime) > 20*time.Second {
 		redScore.Fuel, blueScore.Fuel = arena.Plc.GetProcessorCounts()
 		if redScore.FuelAuto > blueScore.FuelAuto {
 			arena.GameData = "R"

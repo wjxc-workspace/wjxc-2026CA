@@ -96,8 +96,8 @@ type register int
 
 const (
 	fieldIoConnection register = iota
-	redProcessor
-	blueProcessor
+	redHub
+	blueHub
 	hubActivateState
 	registerCount
 )
@@ -293,7 +293,7 @@ func (plc *ModbusPlc) GetCoilNames() []string {
 
 // Returns the red and blue processor counts, respectively.
 func (plc *ModbusPlc) GetProcessorCounts() (int, int) {
-	return int(plc.registers[redProcessor]), int(plc.registers[blueProcessor])
+	return int(plc.registers[redHub]), int(plc.registers[blueHub])
 }
 
 // 0 off off

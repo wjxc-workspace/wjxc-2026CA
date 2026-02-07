@@ -56,7 +56,7 @@ func UpdateMatchSounds() {
 			"warning",
 			"wav",
 			float64(
-				MatchTiming.AutoDurationSec + 110,
+				MatchTiming.AutoDurationSec + MatchTiming.PauseDurationSec + MatchTiming.TeleopDurationSec - MatchTiming.WarningRemainingDurationSec,
 			),
 		},
 		{

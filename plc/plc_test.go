@@ -377,14 +377,14 @@ func TestPlcCoils(t *testing.T) {
 	assert.Equal(t, false, client.coils[1])
 	client.registers[fieldIoConnection] = 31
 	plc.registers[fieldIoConnection] = 31
-	plc.registers[redProcessor] = 1
-	plc.registers[blueProcessor] = 2
+	plc.registers[redHub] = 1
+	plc.registers[blueHub] = 2
 	plc.ResetMatch()
 	plc.update()
 	assert.Equal(t, true, client.coils[1])
 	assert.Equal(t, 31, int(plc.registers[fieldIoConnection]))
-	assert.Equal(t, 0, int(plc.registers[redProcessor]))
-	assert.Equal(t, 0, int(plc.registers[blueProcessor]))
+	assert.Equal(t, 0, int(plc.registers[redHub]))
+	assert.Equal(t, 0, int(plc.registers[blueHub]))
 
 	plc.SetStackLights(false, false, false, false)
 	plc.update()
