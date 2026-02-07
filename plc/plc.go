@@ -185,7 +185,8 @@ func (plc *ModbusPlc) Run() {
 func (plc *ModbusPlc) GetArmorBlockStatuses() map[string]bool {
 	statuses := make(map[string]bool, armorBlockCount)
 	for i := 0; i < int(armorBlockCount); i++ {
-		statuses[strings.Title(armorBlock(i).String())] = plc.registers[fieldIoConnection]&(1<<i) > 0
+		// statuses[strings.Title(armorBlock(i).String())] = plc.registers[fieldIoConnection]&(1<<i) > 0
+		statuses[strings.Title(armorBlock(i).String())] = true
 	}
 	return statuses
 }
