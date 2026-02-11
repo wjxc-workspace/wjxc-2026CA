@@ -306,6 +306,8 @@ func (plc *ModbusPlc) GetProcessorCounts() (int, int) {
 // 6 off red
 // 7 off red_blink
 // 8 blue_blink red_blink
+// 9 blue red_chase
+// 10 blue_chase red
 func (plc *ModbusPlc) SetHubLight(activateState int) {
 	go func() {
 		plc.client.WriteSingleRegister(3, uint16(activateState))

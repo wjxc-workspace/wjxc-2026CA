@@ -1148,14 +1148,38 @@ func (arena *Arena) handlePlcInputOutput() {
 		arena.RealtimeScoreNotifier.Notify()
 	}
 
+	if arena.MatchState == TeleopPeriod && arena.GameData == "" && currentTime.Sub(matchStartTime) > 20*time.Second {
+		redScore.Fuel, blueScore.Fuel = arena.Plc.GetProcessorCounts()
+		if redScore.FuelAuto > blueScore.FuelAuto {
+			arena.GameData = "R"
+		} else if redScore.FuelAuto < blueScore.FuelAuto {
+			arena.GameData = "B"
+		} else {
+			if rand.Intn(2) == 0 {
+				arena.GameData = "R"
+			} else {
+				arena.GameData = "B"
+			}
+		}
+
+		for _, alliance := range arena.AllianceStations {
+			if alliance.DsConn != nil {
+				err := alliance.DsConn.sendGameDataPacket(arena.GameData)
+				if err != nil {
+					fmt.Println(err)
+				}
+			}
+		}
+	}
+
 	if arena.MatchState == AutoPeriod || arena.MatchState == TeleopPeriod {
-		if currentTime.Sub(matchStartTime) < 27*time.Second {
+		if currentTime.Sub(matchStartTime) < 20*time.Second {
 			arena.Plc.SetHubLight(1)
 		} else if currentTime.Sub(matchStartTime) < 30*time.Second {
 			if arena.GameData == "R" {
-				arena.Plc.SetHubLight(2)
+				arena.Plc.SetHubLight(9)
 			} else {
-				arena.Plc.SetHubLight(3)
+				arena.Plc.SetHubLight(10)
 			}
 		} else if currentTime.Sub(matchStartTime) < 52*time.Second {
 			if arena.GameData == "R" {
@@ -1206,30 +1230,6 @@ func (arena *Arena) handlePlcInputOutput() {
 		}
 	} else if arena.MatchState == PostMatch {
 		arena.Plc.SetHubLight(0)
-	}
-
-	if arena.MatchState == TeleopPeriod && arena.GameData == "" && currentTime.Sub(matchStartTime) > 20*time.Second {
-		redScore.Fuel, blueScore.Fuel = arena.Plc.GetProcessorCounts()
-		if redScore.FuelAuto > blueScore.FuelAuto {
-			arena.GameData = "R"
-		} else if redScore.FuelAuto < blueScore.FuelAuto {
-			arena.GameData = "B"
-		} else {
-			if rand.Intn(2) == 0 {
-				arena.GameData = "R"
-			} else {
-				arena.GameData = "B"
-			}
-		}
-
-		for _, alliance := range arena.AllianceStations {
-			if alliance.DsConn != nil {
-				err := alliance.DsConn.sendGameDataPacket(arena.GameData)
-				if err != nil {
-					fmt.Println(err)
-				}
-			}
-		}
 	}
 
 	// Handle the truss lights.
