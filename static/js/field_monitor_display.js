@@ -170,6 +170,7 @@ const handleMatchTime = function (data) {
     } else {
       $(".ds-dependent").attr("data-preMatch", "false");
     }
+    $("#activationMessage").text(data.ActivationMessage);
   });
 };
 

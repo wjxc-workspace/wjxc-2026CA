@@ -6,11 +6,12 @@
 package field
 
 import (
+	"strconv"
+
 	"github.com/Team254/cheesy-arena/game"
 	"github.com/Team254/cheesy-arena/model"
 	"github.com/Team254/cheesy-arena/playoff"
 	"github.com/Team254/cheesy-arena/websocket"
-	"strconv"
 )
 
 type ArenaNotifiers struct {
@@ -33,7 +34,8 @@ type ArenaNotifiers struct {
 
 type MatchTimeMessage struct {
 	MatchState
-	MatchTimeSec int
+	MatchTimeSec      int
+	ActivationMessage string
 }
 
 type audienceAllianceScoreFields struct {
@@ -202,7 +204,7 @@ func (arena *Arena) GenerateMatchLoadMessage() any {
 }
 
 func (arena *Arena) generateMatchTimeMessage() any {
-	return MatchTimeMessage{arena.MatchState, int(arena.MatchTimeSec())}
+	return MatchTimeMessage{arena.MatchState, int(arena.MatchTimeSec()), arena.GameData}
 }
 
 func (arena *Arena) generateMatchTimingMessage() any {
