@@ -570,6 +570,8 @@ func (arena *Arena) ResetMatch() error {
 	arena.AllianceStations["B2"].Bypass = false
 	arena.AllianceStations["B3"].Bypass = false
 	arena.MuteMatchSounds = false
+
+	arena.GameData = ""
 	return nil
 }
 
