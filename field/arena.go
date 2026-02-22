@@ -1141,7 +1141,7 @@ func (arena *Arena) handlePlcInputOutput() {
 	if arena.MatchState == AutoPeriod || arena.MatchState == PausePeriod || arena.MatchState == TeleopPeriod ||
 		inGracePeriod {
 		redScore.Fuel, blueScore.Fuel = arena.Plc.GetProcessorCounts()
-		if currentTime.Sub(matchStartTime) < 20*time.Second {
+		if arena.MatchState == AutoPeriod || arena.MatchState == PausePeriod {
 			redScore.FuelAuto = redScore.Fuel
 			blueScore.FuelAuto = blueScore.Fuel
 		}
@@ -1150,8 +1150,7 @@ func (arena *Arena) handlePlcInputOutput() {
 		arena.RealtimeScoreNotifier.Notify()
 	}
 
-	if arena.MatchState == TeleopPeriod && arena.GameData == "" && currentTime.Sub(matchStartTime) > 20*time.Second {
-		redScore.Fuel, blueScore.Fuel = arena.Plc.GetProcessorCounts()
+	if arena.GameData == "" && arena.MatchState == TeleopPeriod {
 		if redScore.FuelAuto > blueScore.FuelAuto {
 			arena.GameData = "R"
 		} else if redScore.FuelAuto < blueScore.FuelAuto {
@@ -1174,64 +1173,73 @@ func (arena *Arena) handlePlcInputOutput() {
 		}
 	}
 
-	if arena.MatchState == AutoPeriod || arena.MatchState == TeleopPeriod {
-		if currentTime.Sub(matchStartTime) < 20*time.Second {
+	switch arena.MatchState {
+	case AutoPeriod, TeleopPeriod, PausePeriod:
+		if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec) {
 			arena.Plc.SetHubLight(1)
-		} else if currentTime.Sub(matchStartTime) < 30*time.Second {
+		} else if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec+7) {
 			if arena.GameData == "R" {
 				arena.Plc.SetHubLight(9)
 			} else {
 				arena.Plc.SetHubLight(10)
 			}
-		} else if currentTime.Sub(matchStartTime) < 52*time.Second {
+		} else if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec+10) {
+			if arena.GameData == "R" {
+				arena.Plc.SetHubLight(2)
+			} else {
+				arena.Plc.SetHubLight(3)
+			}
+		} else if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec+32) {
 			if arena.GameData == "R" {
 				arena.Plc.SetHubLight(4)
 			} else {
 				arena.Plc.SetHubLight(6)
 			}
-		} else if currentTime.Sub(matchStartTime) < 55*time.Second {
+		} else if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec+35) {
 			if arena.GameData == "R" {
 				arena.Plc.SetHubLight(5)
 			} else {
 				arena.Plc.SetHubLight(7)
 			}
-		} else if currentTime.Sub(matchStartTime) < 77*time.Second {
+		} else if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec+57) {
 			if arena.GameData == "R" {
 				arena.Plc.SetHubLight(6)
 			} else {
 				arena.Plc.SetHubLight(4)
 			}
-		} else if currentTime.Sub(matchStartTime) < 80*time.Second {
+		} else if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec+60) {
 			if arena.GameData == "R" {
 				arena.Plc.SetHubLight(7)
 			} else {
 				arena.Plc.SetHubLight(5)
 			}
-		} else if currentTime.Sub(matchStartTime) < 102*time.Second {
+		} else if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec+82) {
 			if arena.GameData == "R" {
 				arena.Plc.SetHubLight(4)
 			} else {
 				arena.Plc.SetHubLight(6)
 			}
-		} else if currentTime.Sub(matchStartTime) < 105*time.Second {
+		} else if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec+85) {
 			if arena.GameData == "R" {
 				arena.Plc.SetHubLight(5)
 			} else {
 				arena.Plc.SetHubLight(7)
 			}
-		} else if currentTime.Sub(matchStartTime) < 130*time.Second {
+		} else if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec+game.MatchTiming.TeleopDurationSec-game.MatchTiming.WarningRemainingDurationSec) {
 			if arena.GameData == "R" {
 				arena.Plc.SetHubLight(6)
 			} else {
 				arena.Plc.SetHubLight(4)
 			}
-		} else if currentTime.Sub(matchStartTime) < 157*time.Second {
+		} else if currentTime.Sub(matchStartTime) < time.Duration(game.MatchTiming.AutoDurationSec+game.MatchTiming.PauseDurationSec+game.MatchTiming.TeleopDurationSec) {
 			arena.Plc.SetHubLight(1)
-		} else if currentTime.Sub(matchStartTime) < 160*time.Second {
-			arena.Plc.SetHubLight(8)
 		}
-	} else if arena.MatchState == PostMatch {
-		arena.Plc.SetHubLight(0)
+	case PostMatch:
+		if inGracePeriod {
+			arena.Plc.SetHubLight(1)
+		} else {
+			arena.Plc.SetHubLight(0)
+		}
 	}
 
 	// Handle the truss lights.
